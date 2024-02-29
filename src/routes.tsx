@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 import { Configs } from './pages/app/Configs'
-import { Dashboard } from './pages/app/Dashboard'
 import { Delivery } from './pages/app/Delivery'
 import { Finances } from './pages/app/Finances'
+import { Home } from './pages/app/Home/Home'
 import { Withdraw } from './pages/app/Withdraw'
 import { SignIn } from './pages/auth/SignIn'
 import { AppLayout } from './pages/layouts/app'
@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Dashboard />,
+        element: <Home />,
       },
       {
         path: '/delivery',
