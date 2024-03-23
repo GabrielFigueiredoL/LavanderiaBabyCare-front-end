@@ -18,7 +18,7 @@ import { Button } from './ui/button'
 
 export function ServiceDetails() {
   return (
-    <DialogContent>
+    <DialogContent className="max-h-[90%] overflow-y-scroll">
       <DialogHeader>
         <DialogTitle>Pedido: 1827fy2827d6h</DialogTitle>
         <DialogDescription>Detalhes do pedido</DialogDescription>
