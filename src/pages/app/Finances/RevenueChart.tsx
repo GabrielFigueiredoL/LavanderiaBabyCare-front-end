@@ -61,8 +61,8 @@ const CustomTooltip = ({
 }: TooltipProps<ValueType, NameType>) => {
   if (active) {
     return (
-      <div className="custom-tooltip">
-        <p className="label">{`${label} : ${payload?.[0].value?.toLocaleString(
+      <div className="rounded border border-violet-800 bg-background p-2">
+        <p className="label text-sm">{`${label} : ${payload?.[0].value?.toLocaleString(
           'pt-BR',
           {
             style: 'currency',
@@ -97,6 +97,7 @@ export function RevenueChart() {
                   currency: 'BRL',
                 })
               }
+              className="text-xs md:text-base"
             />
             <Tooltip content={<CustomTooltip />} />
             <CartesianGrid vertical={false} className="stroke-muted" />
@@ -106,7 +107,13 @@ export function RevenueChart() {
               stroke="#8884d8"
               activeDot={{ r: 8 }}
             />
-            <XAxis dataKey="date" dy={10} axisLine={false} tickLine={false} />
+            <XAxis
+              dataKey="date"
+              dy={10}
+              axisLine={false}
+              tickLine={false}
+              className="text-xs md:text-base"
+            />
           </LineChart>
         </ResponsiveContainer>
       </CardContent>
