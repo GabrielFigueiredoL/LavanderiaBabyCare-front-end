@@ -1,12 +1,11 @@
 import { createBrowserRouter } from 'react-router-dom'
 
+import { AppLayout } from './pages/_layouts/app'
 import { Configs } from './pages/app/Configs'
-import { Delivery } from './pages/app/Delivery'
-import { Finances } from './pages/app/Finances'
+import { Deliveries } from './pages/app/Deliveries'
+import { Finances } from './pages/app/Finances/Finances'
 import { Home } from './pages/app/Home/Home'
-import { Withdraw } from './pages/app/Withdraw'
 import { SignIn } from './pages/auth/SignIn'
-import { AppLayout } from './pages/layouts/app'
 
 export const router = createBrowserRouter([
   {
@@ -18,12 +17,8 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/delivery',
-        element: <Delivery />,
-      },
-      {
-        path: '/withdraw',
-        element: <Withdraw />,
+        path: '/Deliveries',
+        element: <Deliveries />,
       },
       {
         path: '/finances',

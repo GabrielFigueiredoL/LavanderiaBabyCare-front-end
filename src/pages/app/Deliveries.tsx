@@ -1,9 +1,9 @@
 // interface Props { }
 
-export function Delivery() {
+export function Deliveries() {
   return (
     <div>
-      <span>Delivery</span>
+      <span>Deliveries</span>
     </div>
   )
 }
