@@ -1,54 +1,9 @@
 import { Pagination } from '@/components/pagination'
 
+import { DeliveryData, WithdrawalData } from '../../../assets/testData.js'
 import { ServicesCard } from '../../../components/ServicesCard'
+import { TableFilters } from '../../../components/TableFilters.js'
 import { DailyOverviewCard } from './DailyOverviewCard'
-import { HomeFilters } from './HomeFilters'
-
-const WithdrawalData = [
-  {
-    name: 'Asa Norte',
-    amount: 2,
-  },
-  {
-    name: 'Sudoeste',
-    amount: 1,
-  },
-  {
-    name: 'Aguas Claras',
-    amount: 3,
-  },
-  {
-    name: 'Noroeste',
-    amount: 5,
-  },
-  {
-    name: 'Asa Sul',
-    amount: 3,
-  },
-]
-
-const DeliveryData = [
-  {
-    name: 'Lago Norte',
-    amount: 4,
-  },
-  {
-    name: 'Asa Sul',
-    amount: 8,
-  },
-  {
-    name: 'Sudoeste',
-    amount: 1,
-  },
-  {
-    name: 'Gama',
-    amount: 2,
-  },
-  {
-    name: 'Nucleo Bandeirante',
-    amount: 3,
-  },
-]
 
 export function Home() {
   return (
@@ -60,7 +15,7 @@ export function Home() {
         </div>
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold tracking-tight">Viagens do dia</h1>
-          <HomeFilters />
+          <TableFilters />
         </div>
 
         <div className="space-y-2.5">

@@ -19,7 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-export function HomeFilters() {
+export function TableFilters() {
   return (
     <Dialog>
       <DialogTrigger>
