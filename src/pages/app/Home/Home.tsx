@@ -1,6 +1,6 @@
+import { DeliveryData, WithdrawalData } from '@/assets/testData.ts'
 import { Pagination } from '@/components/pagination'
 
-import { DeliveryData, WithdrawalData } from '../../../assets/testData.js'
 import { ServicesCard } from '../../../components/ServicesCard'
 import { TableFilters } from '../../../components/TableFilters.js'
 import { DailyOverviewCard } from './DailyOverviewCard'
