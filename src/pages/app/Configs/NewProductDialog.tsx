@@ -30,7 +30,7 @@ export function NewProductDialog() {
             <Input className="col-span-3" id="name" required />
           </div>
           <div className="grid grid-cols-4 items-center gap-3">
-            <Label className="text-right" htmlFor="email">
+            <Label className="text-right" htmlFor="value">
               Valor
             </Label>
             <Input
