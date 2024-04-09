@@ -12,14 +12,16 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
-export function ServicesCard() {
+import { Skeleton } from './ui/skeleton'
+
+export function ServicesCardSkeleton() {
   return (
     <Card>
       <CardHeader>
         <CardDescription className="flex justify-between">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" size="xs">
+              <Button variant="outline" size="xs" disabled>
                 <Search className="mr-2 h-3 w-3" />
                 <span>Mais detalhes</span>
               </Button>
@@ -27,9 +29,9 @@ export function ServicesCard() {
 
             <ServiceDetails />
           </Dialog>
-          <Button variant="outline" size="xs">
+          <Button variant="outline" size="xs" disabled>
             <ArrowRight className="mr-2 h-3 w-3" />
-            Retirado
+            <Skeleton className="h-5 w-14" />
           </Button>
         </CardDescription>
       </CardHeader>
@@ -40,28 +42,27 @@ export function ServicesCard() {
             <TableRow>
               <TableCell className="text-muted-foreground">Status</TableCell>
               <TableCell className="flex justify-end">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-slate-400" />
-                  <span className="font-medium text-muted-foreground">
-                    A retirar
-                  </span>
-                </div>
+                <Skeleton className="h-5 w-32" />
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">Cliente</TableCell>
-              <TableCell className="flex justify-end">Gabriel</TableCell>
+              <TableCell className="flex justify-end">
+                <Skeleton className="h-5 w-32" />
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">Bairro</TableCell>
-              <TableCell className="flex justify-end">Sudoeste</TableCell>
+              <TableCell className="flex justify-end">
+                <Skeleton className="h-5 w-32" />
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">
                 Logradouro
               </TableCell>
               <TableCell className="flex justify-end">
-                SQSW 100 Bloco F
+                <Skeleton className="h-5 w-48" />
               </TableCell>
             </TableRow>
             <TableRow>
@@ -69,7 +70,7 @@ export function ServicesCard() {
                 Complemento
               </TableCell>
               <TableCell className="flex justify-end">
-                Apartamento 202
+                <Skeleton className="h-5 w-32" />
               </TableCell>
             </TableRow>
           </TableBody>
