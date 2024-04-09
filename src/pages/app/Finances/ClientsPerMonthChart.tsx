@@ -17,6 +17,7 @@ import {
 } from 'recharts/types/component/DefaultTooltipContent'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Loader2 } from 'lucide-react'
 
 const data = [
   {
@@ -73,23 +74,29 @@ export function ClientsPerMonth() {
         <CardTitle>Clientes por mês</CardTitle>
       </CardHeader>
       <CardContent>
-        <ResponsiveContainer width="100%" height={240}>
-          <BarChart data={data} barCategoryGap="40%">
-            <XAxis dataKey="month" />
-            <Tooltip
-              content={<CustomTooltip />}
-              cursor={{ fill: 'transparent' }}
-            />
-            <CartesianGrid vertical={false} className="stroke-muted" />
-            <Bar
-              dataKey="amount"
-              fill="#8884d8"
-              radius={[360, 360, 360, 360]}
-              activeBar={<Rectangle fill="#413bb2" />}
-            />
-            <YAxis stroke="#888" axisLine={false} tickLine={false} />
-          </BarChart>
-        </ResponsiveContainer>
+        {true ? (
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={data} barCategoryGap="40%">
+              <XAxis dataKey="month" />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ fill: 'transparent' }}
+              />
+              <CartesianGrid vertical={false} className="stroke-muted" />
+              <Bar
+                dataKey="amount"
+                fill="#8884d8"
+                radius={[360, 360, 360, 360]}
+                activeBar={<Rectangle fill="#413bb2" />}
+              />
+              <YAxis stroke="#888" axisLine={false} tickLine={false} />
+            </BarChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        )}
       </CardContent>
     </Card>
   )
