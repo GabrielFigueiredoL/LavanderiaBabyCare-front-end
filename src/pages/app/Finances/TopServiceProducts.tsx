@@ -1,14 +1,13 @@
-// interface Props { }
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+
+import { TopServiceProductsTableRow } from './TopServiceProductsTableRow'
 
 export function TopServiceProducts() {
   return (
@@ -27,28 +26,10 @@ export function TopServiceProducts() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className="font-medium">
-                Carrinho tradicional
-              </TableCell>
-              <TableCell className="text-right">100</TableCell>
-              <TableCell className="text-right">R$ 80,00</TableCell>
-              <TableCell className="text-right">R$ 8000,00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">Bebê conforto</TableCell>
-              <TableCell className="text-right">94</TableCell>
-              <TableCell className="text-right">R$ 40,00</TableCell>
-              <TableCell className="text-right">R$ 3760,00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className="font-medium">
-                Carrinho tradicional
-              </TableCell>
-              <TableCell className="text-right">100</TableCell>
-              <TableCell className="text-right">R$ 80,00</TableCell>
-              <TableCell className="text-right">R$ 8000,00</TableCell>
-            </TableRow>
+            <TopServiceProductsTableRow />
+            <TopServiceProductsTableRow />
+            <TopServiceProductsTableRow />
+            <TopServiceProductsTableRow />
           </TableBody>
         </Table>
       </CardContent>
