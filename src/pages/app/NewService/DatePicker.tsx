@@ -4,7 +4,12 @@ import { Calendar as CalendarIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import { FormControl, FormItem, FormLabel } from '@/components/ui/form'
+import {
+  FormControl,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import {
   Popover,
   PopoverContent,
@@ -50,6 +55,7 @@ export function DatePicker({ field, label }: DateProps) {
           />
         </PopoverContent>
       </Popover>
+      <FormMessage />
     </FormItem>
   )
 }
