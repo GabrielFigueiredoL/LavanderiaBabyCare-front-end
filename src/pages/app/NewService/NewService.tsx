@@ -3,6 +3,7 @@ import { Plus, Search } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
@@ -33,16 +34,18 @@ const NewItem = z.object({
   amount: z.number(),
 })
 
-type NewItem = z.infer<typeof NewItem>
+export type NewItem = z.infer<typeof NewItem>
 
 export const newServiceFormValidationSchema = z.object({
   name: z.string().min(1, 'Informe o nome do cliente'),
-  phone: z.string(),
+  phone: z.string().min(1, 'Informe o telefone do cliente'),
   withdrawalDate: z.date(),
-  deliveryDate: z.date(),
-  cep: z.string(),
-  adress: z.string(),
-  district: z.string(),
+  deliveryDate: z
+    .date()
+    .min(new Date(), 'Informe uma data maior ou igual a hoje'),
+  cep: z.string().max(8, 'O cep deve possuir apenas 8 números'),
+  adress: z.string().min(1, 'Informe o logradouro'),
+  district: z.string().min(1, 'Informe o bairro'),
   number: z.string(),
   complement: z.string(),
   freightage: z.coerce.number().nonnegative(),
@@ -55,7 +58,7 @@ export function NewService() {
     name: '',
     price: 0,
   })
-  const [amount, setAmount] = useState<number>(0)
+  const [amount, setAmount] = useState<number>(1)
   const [selectedItems, setSelectedItems] = useState<NewItem[]>([])
 
   const form = useForm<z.infer<typeof newServiceFormValidationSchema>>({
@@ -76,6 +79,8 @@ export function NewService() {
     },
   })
 
+  const navigate = useNavigate()
+
   const initialItemsPrice = 0
   const finalItemsPrice = selectedItems.reduce(
     (accumulator, currentItem) =>
@@ -86,8 +91,6 @@ export function NewService() {
   const discount = Number(form.watch('discount'))
   const cep = form.watch('cep')
 
-  const navigate = useNavigate()
-
   function HandleOnSubmit(
     values: z.infer<typeof newServiceFormValidationSchema>,
   ) {
@@ -95,12 +98,45 @@ export function NewService() {
   }
 
   async function handleCepSubmit() {
-    const cepData = await fetch(`https://viacep.com.br/ws/${cep}/json`).then(
-      (response) => response.json(),
-    )
+    const cepData = await fetch(`https://viacep.com.br/ws/${cep}/json`)
+      .then((response) => response.json())
+      .catch((error) => {
+        console.log(error)
+        toast.error('Falha ao buscar cep, verifique e tente novamente')
+      })
+
+    const isCepInvalid = cepData.erro
+
+    if (isCepInvalid) {
+      toast.error('Falha ao buscar cep, verifique o número e tente novamente')
+    }
 
     form.setValue('adress', cepData.logradouro)
     form.setValue('district', cepData.bairro)
+  }
+
+  function handleAddService() {
+    const isAlreadySelected = selectedItems.find(
+      (item) => item.service === selectedService,
+    )
+
+    const serviceIsValid = selectedService.name.length
+
+    if (isAlreadySelected) {
+      toast.error('Item já adicionado')
+    } else if (!serviceIsValid) {
+      toast.error('É necessário escolher um item')
+    } else {
+      setSelectedItems((prevState) => [
+        ...prevState,
+        { service: selectedService, amount },
+      ])
+    }
+  }
+
+  function handleRemoveService(selectedItem: NewItem) {
+    const filteredList = selectedItems.filter((item) => item !== selectedItem)
+    setSelectedItems(filteredList)
   }
 
   return (
@@ -235,19 +271,14 @@ export function NewService() {
                   <Input
                     type="number"
                     className="w-20"
-                    min={0}
+                    min={1}
                     value={amount}
                     onChange={(e) => setAmount(Number(e.target.value))}
                   />
                   <Button
                     variant="outline"
                     type="button"
-                    onClick={() =>
-                      setSelectedItems((prevState) => [
-                        ...prevState,
-                        { service: selectedService, amount },
-                      ])
-                    }
+                    onClick={handleAddService}
                   >
                     <Plus />
                   </Button>
@@ -270,9 +301,9 @@ export function NewService() {
                 <TableBody>
                   {selectedItems.map((item) => (
                     <NewServiceTableRow
-                      selectedService={item.service}
-                      amount={item.amount}
+                      selectedItem={item}
                       key={item.service.name}
+                      removeFunction={handleRemoveService}
                     />
                   ))}
                 </TableBody>

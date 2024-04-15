@@ -3,34 +3,42 @@ import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { ServicePropsType } from './NewServiceCombobox'
+import { NewItem } from './NewService'
 
 interface RowProps {
-  selectedService: ServicePropsType
-  amount: number
+  selectedItem: NewItem
+  removeFunction: (selectedItem: NewItem) => void
 }
 
-export function NewServiceTableRow({ selectedService, amount }: RowProps) {
+export function NewServiceTableRow({ selectedItem, removeFunction }: RowProps) {
   return (
     <TableRow>
       <TableCell className="text-right">
-        <Button variant="ghost" size="xs">
+        <Button
+          variant="ghost"
+          size="xs"
+          type="button"
+          onClick={() => removeFunction(selectedItem)}
+        >
           <X className="h-5 w-5" color="#be123c" />
         </Button>
       </TableCell>
-      <TableCell>{selectedService.name}</TableCell>
+      <TableCell>{selectedItem.service.name}</TableCell>
       <TableCell className="text-right">
-        {selectedService.price.toLocaleString('pt-BR', {
+        {selectedItem.service.price.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         })}
       </TableCell>
-      <TableCell className="text-right">{amount}</TableCell>
+      <TableCell className="text-right">{selectedItem.amount}</TableCell>
       <TableCell className="text-right">
-        {(selectedService.price * amount).toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        })}
+        {(selectedItem.service.price * selectedItem.amount).toLocaleString(
+          'pt-BR',
+          {
+            style: 'currency',
+            currency: 'BRL',
+          },
+        )}
       </TableCell>
     </TableRow>
   )
