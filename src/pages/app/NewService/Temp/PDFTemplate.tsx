@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { Facebook, Instagram, Mail, Phone } from 'lucide-react'
+import { AlertTriangle, Facebook, Instagram, Mail, Phone } from 'lucide-react'
 import { useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print'
@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/table'
 
 import { newServiceFormValidationSchema } from '../NewService'
+import { guidanceData } from './guidanceData'
 
 type DataProps = z.infer<typeof newServiceFormValidationSchema>
 
@@ -128,24 +129,24 @@ export function PDFTemplate() {
           </h2>
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead>Descrição</TableHead>
-                <TableHead className="text-right">Preço Unitário</TableHead>
-                <TableHead className="text-right">Qtd.</TableHead>
-                <TableHead className="text-right">Preço</TableHead>
+              <TableRow className="p-0">
+                <TableHead className="h-8">Descrição</TableHead>
+                <TableHead className="h-8 text-right">Preço Unitário</TableHead>
+                <TableHead className="h-8 text-right">Qtd.</TableHead>
+                <TableHead className="h-8 text-right">Preço</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {data.selectedItems.map((item) => (
                 <TableRow key={item.service.name}>
-                  <TableCell>{item.service.name}</TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="py-3">{item.service.name}</TableCell>
+                  <TableCell className="py-3 text-right">
                     {transformToMoney(item.service.price)}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="py-3 text-right">
                     {transformToMoney(item.amount)}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="py-3 text-right">
                     {transformToMoney(item.service.price * item.amount)}
                   </TableCell>
                 </TableRow>
@@ -199,6 +200,17 @@ export function PDFTemplate() {
               <p className="justify-self-center font-bold">PIX</p>
               <p className="justify-self-end">61983104317</p>
             </div>
+          </div>
+          <h2 className="bg-slate-300 text-lg font-bold tracking-tight">
+            Informações e orientações importantes
+          </h2>
+          <div className="flex flex-col gap-2">
+            {guidanceData.map((title) => (
+              <div className="flex items-center gap-4" key={title}>
+                <AlertTriangle className="flex-shrink-0" size={20} />
+                <p>{title}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
