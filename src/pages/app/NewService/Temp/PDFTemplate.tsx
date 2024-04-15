@@ -144,7 +144,7 @@ export function PDFTemplate() {
                     {transformToMoney(item.service.price)}
                   </TableCell>
                   <TableCell className="py-3 text-right">
-                    {transformToMoney(item.amount)}
+                    {item.amount}
                   </TableCell>
                   <TableCell className="py-3 text-right">
                     {transformToMoney(item.service.price * item.amount)}
