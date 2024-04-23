@@ -14,4 +14,5 @@ export const newDeliveryFormValidationSchema = z.object({
   complement: z.string(),
   freightage: z.coerce.number().nonnegative(),
   discount: z.coerce.number().nonnegative(),
+  id: z.string(),
 })

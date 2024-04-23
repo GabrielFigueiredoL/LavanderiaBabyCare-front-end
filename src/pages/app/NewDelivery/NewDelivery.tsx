@@ -4,6 +4,7 @@ import { Plus, Search } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
 import { postNewDelivery } from '@/api/postNewDelivery'
@@ -60,6 +61,7 @@ export function NewDelivery() {
       complement: '',
       freightage: 0,
       discount: 0,
+      id: uuid(),
     },
   })
 
