@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { deleteService } from '@/api/deleteService'
 import { ServicePropsResponse } from '@/api/getServices'
 import { putUpdateService } from '@/api/putUpdateService'
 import { InputField } from '@/components/InputField'
@@ -19,6 +20,8 @@ import { Form, FormField } from '@/components/ui/form'
 
 interface ServiceProps {
   service: ServicePropsResponse
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
 
 const editServiceSchema = z.object({
@@ -27,7 +30,11 @@ const editServiceSchema = z.object({
   updated_at: z.date(),
 })
 
-export function EditServiceDialog({ service }: ServiceProps) {
+export function EditServiceDialog({
+  service,
+  open,
+  onOpenChange,
+}: ServiceProps) {
   const form = useForm<z.infer<typeof editServiceSchema>>({
     resolver: zodResolver(editServiceSchema),
     defaultValues: {
@@ -37,8 +44,40 @@ export function EditServiceDialog({ service }: ServiceProps) {
     },
   })
 
+  const queryClient = useQueryClient()
+
   const { mutateAsync: updateService } = useMutation({
     mutationFn: putUpdateService,
+    onSuccess(_, { id, name, price, updated_at: updatedAt }) {
+      const cached = queryClient.getQueryData<ServicePropsResponse[]>([
+        'services',
+      ])
+      if (cached) {
+        const updatedData = cached.map((item) => {
+          if (item.id === id) {
+            return { ...item, name, price, updatedAt }
+          }
+          return item
+        })
+
+        queryClient.setQueryData(['services'], updatedData)
+      }
+    },
+  })
+
+  const { mutateAsync: deleteServiceFn } = useMutation({
+    mutationFn: deleteService,
+    onSuccess(_, variables) {
+      const cached = queryClient.getQueryData<ServicePropsResponse[]>([
+        'services',
+      ])
+      if (cached) {
+        queryClient.setQueryData(
+          ['services'],
+          cached.filter((service) => service.id !== variables),
+        )
+      }
+    },
   })
 
   async function handleOnSubmit(values: z.infer<typeof editServiceSchema>) {
@@ -54,6 +93,16 @@ export function EditServiceDialog({ service }: ServiceProps) {
       toast.success('Serviço editado com sucesso.')
     } catch {
       toast.error('Não foi possivel editar o serviço.')
+    }
+  }
+
+  async function handleOnDelete() {
+    try {
+      await deleteServiceFn(service.id)
+      onOpenChange(!open)
+      toast.success('Serviço excluído com sucesso.')
+    } catch {
+      toast.error('Não foi possivel excluir o serviço.')
     }
   }
   return (
@@ -88,8 +137,16 @@ export function EditServiceDialog({ service }: ServiceProps) {
           </div>
 
           <DialogFooter className="gap-3">
-            <Button variant="ghost">Cancelar</Button>
-            <Button variant="destructive">Excluir</Button>
+            <Button variant="ghost" type="button">
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              type="button"
+              onClick={handleOnDelete}
+            >
+              Excluir
+            </Button>
             <Button variant="accept" type="submit">
               Salvar
             </Button>

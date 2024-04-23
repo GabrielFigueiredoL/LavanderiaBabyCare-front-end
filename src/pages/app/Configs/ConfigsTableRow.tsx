@@ -1,6 +1,7 @@
 import { formatDistance } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { SquarePen } from 'lucide-react'
+import { useState } from 'react'
 
 import { ServicePropsResponse } from '@/api/getServices'
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,7 @@ interface ServiceProps {
 }
 
 export function ConfigsTableRow({ service }: ServiceProps) {
+  const [open, setOpen] = useState(false)
   return (
     <TableRow>
       <TableCell className="text-xs font-medium md:text-sm ">
@@ -32,14 +34,18 @@ export function ConfigsTableRow({ service }: ServiceProps) {
         })}
       </TableCell>
       <TableCell className="text-right">
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="ghost" size="xs">
               <SquarePen />
             </Button>
           </DialogTrigger>
 
-          <EditServiceDialog service={service} />
+          <EditServiceDialog
+            service={service}
+            open={open}
+            onOpenChange={setOpen}
+          />
         </Dialog>
       </TableCell>
     </TableRow>
