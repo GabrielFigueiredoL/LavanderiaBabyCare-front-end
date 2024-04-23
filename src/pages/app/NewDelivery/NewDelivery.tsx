@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
 import { Plus, Search } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { postNewDelivery } from '@/api/postNewDelivery'
 import { Button } from '@/components/ui/button'
 import { Form, FormField } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -20,14 +21,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+import { InputField } from '../../../components/InputField'
 import { DatePicker } from './DatePicker'
-import { InputField } from './InputField'
+import { newDeliveryFormValidationSchema } from './FormSchema'
 import {
-  NewServiceCombobox,
+  NewDeliveryCombobox,
   ServiceProps,
   ServicePropsType,
-} from './NewServiceCombobox'
-import { NewServiceTableRow } from './NewServiceTableRow'
+} from './NewDeliveryCombobox'
+import { NewDeliveryTableRow } from './NewDeliveryTableRow'
 
 const NewItem = z.object({
   service: ServiceProps,
@@ -36,24 +38,7 @@ const NewItem = z.object({
 
 export type NewItem = z.infer<typeof NewItem>
 
-export const newServiceFormValidationSchema = z.object({
-  name: z.string().min(1, 'Informe o nome do cliente'),
-  phone: z.string().min(1, 'Informe o telefone do cliente'),
-  withdrawalDate: z.date(),
-  deliveryDate: z
-    .date()
-    .min(new Date(), 'Informe uma data maior ou igual a hoje'),
-  cep: z.string().max(8, 'O cep deve possuir apenas 8 números'),
-  adress: z.string().min(1, 'Informe o logradouro'),
-  district: z.string().min(1, 'Informe o bairro'),
-  number: z.string(),
-  complement: z.string(),
-  freightage: z.coerce.number().nonnegative(),
-  discount: z.coerce.number().nonnegative(),
-  selectedItems: z.array(NewItem),
-})
-
-export function NewService() {
+export function NewDelivery() {
   const [selectedService, setSelectedService] = useState<ServicePropsType>({
     name: '',
     price: 0,
@@ -61,8 +46,8 @@ export function NewService() {
   const [amount, setAmount] = useState<number>(1)
   const [selectedItems, setSelectedItems] = useState<NewItem[]>([])
 
-  const form = useForm<z.infer<typeof newServiceFormValidationSchema>>({
-    resolver: zodResolver(newServiceFormValidationSchema),
+  const form = useForm<z.infer<typeof newDeliveryFormValidationSchema>>({
+    resolver: zodResolver(newDeliveryFormValidationSchema),
     defaultValues: {
       name: '',
       phone: '',
@@ -75,11 +60,8 @@ export function NewService() {
       complement: '',
       freightage: 0,
       discount: 0,
-      selectedItems: [],
     },
   })
-
-  const navigate = useNavigate()
 
   const initialItemsPrice = 0
   const finalItemsPrice = selectedItems.reduce(
@@ -91,10 +73,19 @@ export function NewService() {
   const discount = Number(form.watch('discount'))
   const cep = form.watch('cep')
 
-  function HandleOnSubmit(
-    values: z.infer<typeof newServiceFormValidationSchema>,
+  const { mutateAsync: addNewService } = useMutation({
+    mutationFn: postNewDelivery,
+  })
+
+  async function HandleOnSubmit(
+    values: z.infer<typeof newDeliveryFormValidationSchema>,
   ) {
-    navigate('/toPrint', { state: { data: { ...values, selectedItems } } })
+    try {
+      await addNewService({ ...values, status: 'toBeWithdrawn', selectedItems })
+      toast.success('Entrega adicionada com sucesso.')
+    } catch {
+      toast.error('Não foi possivel adicionar uma nova entrega.')
+    }
   }
 
   async function handleCepSubmit() {
@@ -264,7 +255,7 @@ export function NewService() {
               <div>
                 <Label>Selecione um serviço</Label>
                 <div className="flex gap-2">
-                  <NewServiceCombobox
+                  <NewDeliveryCombobox
                     selectedService={selectedService}
                     setSelectedService={setSelectedService}
                   />
@@ -300,7 +291,7 @@ export function NewService() {
                 </TableHeader>
                 <TableBody>
                   {selectedItems.map((item) => (
-                    <NewServiceTableRow
+                    <NewDeliveryTableRow
                       selectedItem={item}
                       key={item.service.name}
                       removeFunction={handleRemoveService}

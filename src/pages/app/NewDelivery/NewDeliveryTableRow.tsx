@@ -3,14 +3,17 @@ import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { NewItem } from './NewService'
+import { NewItem } from './NewDelivery'
 
 interface RowProps {
   selectedItem: NewItem
   removeFunction: (selectedItem: NewItem) => void
 }
 
-export function NewServiceTableRow({ selectedItem, removeFunction }: RowProps) {
+export function NewDeliveryTableRow({
+  selectedItem,
+  removeFunction,
+}: RowProps) {
   return (
     <TableRow>
       <TableCell className="text-right">
