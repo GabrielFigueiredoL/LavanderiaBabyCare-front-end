@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Calendar as CalendarIcon } from 'lucide-react'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -23,10 +24,11 @@ interface DateProps {
 }
 
 export function DatePicker({ field, label }: DateProps) {
+  const [open, setOpen] = useState(false)
   return (
     <FormItem className="flex flex-col">
       <FormLabel>{label}</FormLabel>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <FormControl>
             <Button
@@ -50,7 +52,10 @@ export function DatePicker({ field, label }: DateProps) {
             mode="single"
             locale={ptBR}
             selected={field.value}
-            onSelect={field.onChange}
+            onSelect={(value) => {
+              field.onChange(value)
+              setOpen(!open)
+            }}
             initialFocus
           />
         </PopoverContent>
