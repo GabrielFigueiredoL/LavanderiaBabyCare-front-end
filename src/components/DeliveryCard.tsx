@@ -1,6 +1,7 @@
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { ArrowRight, Search } from 'lucide-react'
 
+import { DeliveryPropsResponse } from '@/api/getDeliveries'
 import { ServiceDetails } from '@/components/ServiceDetails'
 import { Button } from '@/components/ui/button'
 import {
@@ -12,7 +13,13 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 
-export function ServicesCard() {
+import { DeliveryStatus } from './DeliveryStatus'
+
+interface DeliveryCardProps {
+  delivery: DeliveryPropsResponse
+}
+
+export function DeliveryCard({ delivery }: DeliveryCardProps) {
   return (
     <Card>
       <CardHeader>
@@ -40,28 +47,27 @@ export function ServicesCard() {
             <TableRow>
               <TableCell className="text-muted-foreground">Status</TableCell>
               <TableCell className="flex justify-end">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-slate-400" />
-                  <span className="font-medium text-muted-foreground">
-                    A retirar
-                  </span>
-                </div>
+                {<DeliveryStatus status={delivery.status} />}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">Cliente</TableCell>
-              <TableCell className="flex justify-end">Gabriel</TableCell>
+              <TableCell className="flex justify-end">
+                {delivery?.name}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">Bairro</TableCell>
-              <TableCell className="flex justify-end">Sudoeste</TableCell>
+              <TableCell className="flex justify-end">
+                {delivery.district}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">
                 Logradouro
               </TableCell>
               <TableCell className="flex justify-end">
-                SQSW 100 Bloco F
+                {delivery.adress}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -69,7 +75,7 @@ export function ServicesCard() {
                 Complemento
               </TableCell>
               <TableCell className="flex justify-end">
-                Apartamento 202
+                {`${delivery.complement} ${delivery.number}`}
               </TableCell>
             </TableRow>
           </TableBody>
