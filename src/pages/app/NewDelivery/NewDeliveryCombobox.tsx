@@ -61,8 +61,8 @@ export function NewDeliveryCombobox({
       </PopoverTrigger>
       <PopoverContent className="min-w-min p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandInput placeholder="Busque um serviço..." />
+          <CommandEmpty>Não foi encontrado nenhum serviço.</CommandEmpty>
           <CommandGroup>
             {services?.map((item) => (
               <CommandItem
