@@ -3,8 +3,8 @@ import { AlertTriangle, Facebook, Instagram, Mail, Phone } from 'lucide-react'
 import { useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print'
-import { z } from 'zod'
 
+import { DeliveryPropsResponse } from '@/api/getDeliveries'
 import BabycareLogo from '@/assets/babycare.png'
 import { useTheme } from '@/components/theme/ThemeProvider'
 import { Button } from '@/components/ui/button'
@@ -18,13 +18,10 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { newServiceFormValidationSchema } from '../NewService'
-import { guidanceData } from './guidanceData'
-
-type DataProps = z.infer<typeof newServiceFormValidationSchema>
+import { guidanceData } from '../../assets/guidanceData'
 
 function transformToMoney(value: number) {
-  return value.toLocaleString('pt-BR', {
+  return (value / 100).toLocaleString('pt-BR', {
     style: 'currency',
     currency: 'BRL',
   })
@@ -35,7 +32,7 @@ export function PDFTemplate() {
   const { setTheme } = useTheme()
   setTheme('light')
 
-  const data: DataProps = location.state.data
+  const data: DeliveryPropsResponse = location.state.data
 
   const initialItemsPrice = 0
   const finalItemsPrice = data.selectedItems.reduce(
