@@ -1,0 +1,83 @@
+{
+  "deliveries": [],
+  "services": [
+    {
+      "id": "bfbd98f9-0fe1-55f9-833e-c94a8d942d57",
+      "name": "almofada de amamentação",
+      "price": 3000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "484eee47-dded-51de-a6ae-6ddeab902ebd",
+      "name": "bebê conforto",
+      "price": 6000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "de8f0a73-85a7-5237-a279-fdd8a5412c25",
+      "name": "berço portátil",
+      "price": 7000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "08b4dc07-ea34-5590-8117-2df110e83968",
+      "name": "cadeirinha de alimentação p",
+      "price": 5000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "b8c04a0c-3983-5fd9-ba37-fbc8d6042ab3",
+      "name": "cadeirinha de alimentação g",
+      "price": 7000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "5157f9b8-16af-5b5e-a051-7436d18e0659",
+      "name": "cadeirinha de carro",
+      "price": 7000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "48131c05-0d29-5ee8-9156-854d7d86cace",
+      "name": "cadeirinha de descanso",
+      "price": 5000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "b137239c-3601-5a93-bc46-1a0a0b6884d1",
+      "name": "carrinho de gêmeo",
+      "price": 12000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+      "name": "carrinho tradicional",
+      "price": 7500,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "4759cfa2-5387-55a3-93bd-7f4faca73101",
+      "name": "moisés",
+      "price": 6000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "87acfffc-7974-513e-b6d6-6464ad6e762c",
+      "name": "colchão de berço padrão",
+      "price": 6000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "a07f7219-4d3c-517a-b637-4bb66f70c92e",
+      "name": "ninho",
+      "price": 4000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    },
+    {
+      "id": "c4e073e7-8edd-5e07-bf65-816f61b869c2",
+      "name": "tapete de atividades",
+      "price": 3000,
+      "updated_at": "2024-04-20T10:17:59.823Z"
+    }
+  ]
+}
