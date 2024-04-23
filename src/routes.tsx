@@ -5,8 +5,8 @@ import { Configs } from './pages/app/Configs/Configs'
 import { Deliveries } from './pages/app/Deliveries/Deliveries'
 import { Finances } from './pages/app/Finances/Finances'
 import { Home } from './pages/app/Home/Home'
-import { NewService } from './pages/app/NewService/NewService'
-import { PDFTemplate } from './pages/app/NewService/Temp/PDFTemplate'
+import { NewDelivery } from './pages/app/NewDelivery/NewDelivery'
+import { PDFTemplate } from './pages/app/toPrint'
 import { SignIn } from './pages/auth/SignIn'
 
 export const router = createBrowserRouter([
@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/new',
-        element: <NewService />,
+        element: <NewDelivery />,
       },
     ],
   },
