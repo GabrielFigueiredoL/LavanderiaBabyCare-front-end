@@ -1,8 +1,8 @@
-// interface Props { }
-
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
+import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 
+import { getServices } from '@/api/getServices'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -13,9 +13,14 @@ import {
 } from '@/components/ui/table'
 
 import { ConfigsTableRow } from './ConfigsTableRow'
-import { NewProductDialog } from './NewProductDialog'
+import { NewServiceDialog } from './NewServiceDialog'
 
 export function Configs() {
+  const { data: services } = useQuery({
+    queryKey: ['services'],
+    queryFn: getServices,
+  })
+
   return (
     <div>
       <div className="mb-4 flex justify-between">
@@ -28,7 +33,7 @@ export function Configs() {
             </Button>
           </DialogTrigger>
 
-          <NewProductDialog />
+          <NewServiceDialog />
         </Dialog>
       </div>
 
@@ -43,17 +48,9 @@ export function Configs() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
-            <ConfigsTableRow />
+            {services?.map((service) => (
+              <ConfigsTableRow service={service} key={service.id} />
+            ))}
           </TableBody>
         </Table>
       </div>

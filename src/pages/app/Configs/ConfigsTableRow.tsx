@@ -1,24 +1,35 @@
-// interface Props { }
-
+import { formatDistance } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 import { SquarePen } from 'lucide-react'
 
+import { ServicePropsResponse } from '@/api/getServices'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { EditProductDialog } from './EditProductDialog'
+import { EditServiceDialog } from './EditServiceDialog'
 
-export function ConfigsTableRow() {
+interface ServiceProps {
+  service: ServicePropsResponse
+}
+
+export function ConfigsTableRow({ service }: ServiceProps) {
   return (
     <TableRow>
       <TableCell className="text-xs font-medium md:text-sm ">
-        Carrinho Tradicional
+        {service.name}
       </TableCell>
       <TableCell className="text-xs font-medium text-muted-foreground md:text-sm">
-        Há 7 anos atrás
+        {formatDistance(service.updated_at, new Date(), {
+          locale: ptBR,
+          addSuffix: true,
+        })}
       </TableCell>
       <TableCell className="text-right text-xs font-medium md:text-sm">
-        R$ 79,90
+        {(service.price / 100).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })}
       </TableCell>
       <TableCell className="text-right">
         <Dialog>
@@ -28,7 +39,7 @@ export function ConfigsTableRow() {
             </Button>
           </DialogTrigger>
 
-          <EditProductDialog />
+          <EditServiceDialog service={service} />
         </Dialog>
       </TableCell>
     </TableRow>
