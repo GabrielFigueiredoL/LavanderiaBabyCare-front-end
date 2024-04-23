@@ -1,14 +1,20 @@
+import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
+import { getDeliveries } from '@/api/getDeliveries'
 import { Pagination } from '@/components/pagination'
 import { Button } from '@/components/ui/button'
 
-import { ServicesCard } from '../../../components/ServicesCard'
+import { DeliveryCard } from '../../../components/DeliveryCard'
 import { TableFilters } from '../../../components/TableFilters'
 
 export function Deliveries() {
   const navigate = useNavigate()
+  const { data: deliveries } = useQuery({
+    queryKey: ['deliveries'],
+    queryFn: getDeliveries,
+  })
   return (
     <>
       <div className="relative flex flex-col gap-4">
@@ -27,15 +33,9 @@ export function Deliveries() {
 
         <div className="space-y-2.5">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
+            {deliveries?.map((delivery) => (
+              <DeliveryCard key={delivery.id} delivery={delivery} />
+            ))}
           </div>
           <Pagination />
         </div>

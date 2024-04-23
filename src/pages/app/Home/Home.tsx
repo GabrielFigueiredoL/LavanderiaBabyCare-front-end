@@ -1,11 +1,19 @@
+import { useQuery } from '@tanstack/react-query'
+
+import { getDeliveries } from '@/api/getDeliveries'
 import { DeliveryData, WithdrawalData } from '@/assets/testData.ts'
 import { Pagination } from '@/components/pagination'
 
-import { ServicesCard } from '../../../components/ServicesCard'
-import { TableFilters } from '../../../components/TableFilters.js'
+import { DeliveryCard } from '../../../components/DeliveryCard'
+import { TableFilters } from '../../../components/TableFilters'
 import { DailyOverviewCard } from './DailyOverviewCard'
 
 export function Home() {
+  const { data: deliveries } = useQuery({
+    queryKey: ['deliveries'],
+    queryFn: getDeliveries,
+  })
+
   return (
     <>
       <div className="relative flex flex-col gap-4">
@@ -20,15 +28,9 @@ export function Home() {
 
         <div className="space-y-2.5">
           <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
-            <ServicesCard />
+            {deliveries?.map((delivery) => (
+              <DeliveryCard key={delivery.id} delivery={delivery} />
+            ))}
           </div>
           <Pagination />
         </div>
