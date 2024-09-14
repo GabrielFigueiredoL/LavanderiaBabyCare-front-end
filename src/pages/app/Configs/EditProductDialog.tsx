@@ -35,7 +35,7 @@ export function EditProductDialog({ product, open, onOpenChange }: props) {
     resolver: zodResolver(editProductSchema),
     defaultValues: {
       name: product?.name ?? '',
-      price: product?.price / 100 ?? 0,
+      price: product?.price / 100,
       updated_at: new Date(),
     },
   })

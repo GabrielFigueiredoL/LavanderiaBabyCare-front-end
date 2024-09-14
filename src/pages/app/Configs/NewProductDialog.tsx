@@ -56,7 +56,8 @@ export function NewProductDialog({ open, setOpen }: ProductDialogProps) {
       return { previousData }
     },
 
-    onError: (_, newData, context) => {
+    onError: (error, _, context) => {
+      console.log(error)
       queryClient.setQueryData(['products'], context?.previousData)
     },
 
