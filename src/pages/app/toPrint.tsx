@@ -1,12 +1,11 @@
-import { format } from 'date-fns'
+import { format, parse } from 'date-fns'
 import { AlertTriangle, Facebook, Instagram, Mail, Phone } from 'lucide-react'
 import { useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useReactToPrint } from 'react-to-print'
 
-import { DeliveryPropsResponse } from '@/api/getDeliveries'
+import { OrderDetailsPropsResponse } from '@/api/orderRequests/order'
 import BabycareLogo from '@/assets/babycare.png'
-import { useTheme } from '@/components/theme/ThemeProvider'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -27,24 +26,24 @@ function transformToMoney(value: number) {
   })
 }
 
+function transformToPhoneNumber(phoneNumber: string) {
+  const match = phoneNumber.match(/^(\d{2})(\d{4}|\d{5})(\d{4})$/)
+  if (match) {
+    return ['(', match[1], ') ', match[2], '-', match[3]].join('')
+  }
+}
+
 export function PDFTemplate() {
   const location = useLocation()
-  const { setTheme } = useTheme()
-  setTheme('light')
 
-  const data: DeliveryPropsResponse = location.state.data
-
-  const initialItemsPrice = 0
-  const finalItemsPrice = data.selectedItems.reduce(
-    (accumulator, currentItem) =>
-      accumulator + currentItem.service.price * currentItem.amount,
-    initialItemsPrice,
-  )
+  const data: OrderDetailsPropsResponse = location.state.data
 
   const contentToPrint = useRef(null)
   const handlePrint = useReactToPrint({
-    documentTitle: `${data.name} - ${data.deliveryDate}`,
+    documentTitle: `${data.clientName} - ${data.deliveryDate}`,
   })
+
+  transformToPhoneNumber(data.clientPhone)
 
   return (
     <div className="flex flex-col">
@@ -91,37 +90,52 @@ export function PDFTemplate() {
           <div className="flex justify-between">
             <p>
               <span className="font-bold">Data de retirada:</span>{' '}
-              {format(data.withdrawalDate, 'dd/MM/yyyy')}
+              {format(
+                parse(
+                  data?.pickupDate as unknown as string,
+                  'yyyy-MM-dd',
+                  new Date(),
+                ),
+                'dd/MM/yyyy',
+              )}
             </p>
             <p>
               <span className="font-bold">Data de entrega:</span>{' '}
-              {format(data.deliveryDate, 'dd/MM/yyyy')}
+              {format(
+                parse(
+                  data?.deliveryDate as unknown as string,
+                  'yyyy-MM-dd',
+                  new Date(),
+                ),
+                'dd/MM/yyyy',
+              )}
             </p>
           </div>
 
-          <h2 className="bg-slate-300 text-lg font-bold tracking-tight">
+          <h2 className="bg-border text-lg font-bold tracking-tight">
             Cliente
           </h2>
           <div className="grid grid-cols-2">
             <p>
-              <span className="font-bold">Nome:</span> {data.name}
+              <span className="font-bold">Nome:</span> {data.clientName}
             </p>
             <p className="justify-self-end">
-              <span className="font-bold">Celular:</span> {data.phone}
+              <span className="font-bold">Celular:</span>{' '}
+              {transformToPhoneNumber(data.clientPhone)}
             </p>
             <p>
               <span className="font-bold">Endereço:</span>{' '}
-              {`${data.adress} ${data.complement}, ${data.number}. ${data.district}`}
+              {`${data.address} ${data.complement}, ${data.number}. ${data.district}`}
             </p>
             {data.cep && (
               <p className="justify-self-end">
                 {' '}
-                <span className="font-bold">Cep:</span>
+                <span className="font-bold">Cep: </span>
                 {data.cep}
               </p>
             )}
           </div>
-          <h2 className="bg-slate-300 text-lg font-bold tracking-tight">
+          <h2 className="bg-border text-lg font-bold tracking-tight">
             Serviços
           </h2>
           <Table>
@@ -135,16 +149,16 @@ export function PDFTemplate() {
             </TableHeader>
             <TableBody>
               {data.selectedItems.map((item) => (
-                <TableRow key={item.service.name}>
-                  <TableCell className="py-3">{item.service.name}</TableCell>
+                <TableRow key={item.product.name}>
+                  <TableCell className="py-3">{item.product.name}</TableCell>
                   <TableCell className="py-3 text-right">
-                    {transformToMoney(item.service.price)}
+                    {transformToMoney(item.price)}
                   </TableCell>
                   <TableCell className="py-3 text-right">
                     {item.amount}
                   </TableCell>
                   <TableCell className="py-3 text-right">
-                    {transformToMoney(item.service.price * item.amount)}
+                    {transformToMoney(item.subTotal)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -155,7 +169,7 @@ export function PDFTemplate() {
                   Valor Total
                 </TableCell>
                 <TableCell className="py-2 text-right">
-                  {transformToMoney(finalItemsPrice)}
+                  {transformToMoney(data.itemsTotal)}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -163,7 +177,7 @@ export function PDFTemplate() {
                   Frete
                 </TableCell>
                 <TableCell className="py-2 text-right">
-                  {transformToMoney(data.freightage)}
+                  + {transformToMoney(data.shipping)}
                 </TableCell>
               </TableRow>
               <TableRow>
@@ -179,12 +193,12 @@ export function PDFTemplate() {
                   Valor Final
                 </TableCell>
                 <TableCell className="py-2 text-right">
-                  {transformToMoney(finalItemsPrice)}
+                  {transformToMoney(data.total)}
                 </TableCell>
               </TableRow>
             </TableFooter>
           </Table>
-          <h2 className="bg-slate-300 text-lg font-bold tracking-tight">
+          <h2 className="bg-border text-lg font-bold tracking-tight">
             Pagamento
           </h2>
           <div className="flex justify-between">
@@ -198,7 +212,7 @@ export function PDFTemplate() {
               <p className="justify-self-end">61983104317</p>
             </div>
           </div>
-          <h2 className="bg-slate-300 text-lg font-bold tracking-tight">
+          <h2 className="bg-border text-lg font-bold tracking-tight">
             Informações e orientações importantes
           </h2>
           <div className="flex flex-col gap-2">

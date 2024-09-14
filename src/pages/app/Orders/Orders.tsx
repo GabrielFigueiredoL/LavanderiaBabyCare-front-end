@@ -2,18 +2,18 @@ import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-import { getDeliveries } from '@/api/getDeliveries'
+import { getOrders } from '@/api/orderRequests/getOrders'
 import { Pagination } from '@/components/pagination'
 import { Button } from '@/components/ui/button'
 
-import { DeliveryCard } from '../../../components/DeliveryCard'
+import { OrderCard } from '../../../components/OrderCard'
 import { TableFilters } from '../../../components/TableFilters'
 
-export function Deliveries() {
+export function Orders() {
   const navigate = useNavigate()
-  const { data: deliveries } = useQuery({
-    queryKey: ['deliveries'],
-    queryFn: getDeliveries,
+  const { data: orders = [] } = useQuery({
+    queryKey: ['orders'],
+    queryFn: getOrders,
   })
   return (
     <>
@@ -31,14 +31,20 @@ export function Deliveries() {
           </div>
         </div>
 
-        <div className="space-y-2.5">
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {deliveries?.map((delivery) => (
-              <DeliveryCard key={delivery.id} delivery={delivery} />
-            ))}
+        {orders?.length > 0 ? (
+          <div className="space-y-2.5">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+              {orders?.map((order) => <OrderCard key={order.id} {...order} />)}
+            </div>
+            <Pagination />
           </div>
-          <Pagination />
-        </div>
+        ) : (
+          <div className="flex items-center justify-center">
+            <h1 className="text-2xl font-bold tracking-tight">
+              Sem entregas...
+            </h1>
+          </div>
+        )}
       </div>
     </>
   )

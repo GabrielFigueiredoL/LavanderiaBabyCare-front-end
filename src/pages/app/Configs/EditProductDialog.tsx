@@ -4,9 +4,9 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { deleteService } from '@/api/deleteService'
-import { ServicePropsResponse } from '@/api/getServices'
-import { putUpdateService } from '@/api/putUpdateService'
+import { deleteProduct } from '@/api/productRequests/deleteProduct'
+import { productProps } from '@/api/productRequests/product'
+import { putUpdateProduct } from '@/api/productRequests/putUpdateProduct'
 import { InputField } from '@/components/InputField'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,28 +18,24 @@ import {
 } from '@/components/ui/dialog'
 import { Form, FormField } from '@/components/ui/form'
 
-interface ServiceProps {
-  service: ServicePropsResponse
+interface props {
+  product: productProps
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-const editServiceSchema = z.object({
+const editProductSchema = z.object({
   name: z.string(),
   price: z.coerce.number(),
   updated_at: z.date(),
 })
 
-export function EditServiceDialog({
-  service,
-  open,
-  onOpenChange,
-}: ServiceProps) {
-  const form = useForm<z.infer<typeof editServiceSchema>>({
-    resolver: zodResolver(editServiceSchema),
+export function EditProductDialog({ product, open, onOpenChange }: props) {
+  const form = useForm<z.infer<typeof editProductSchema>>({
+    resolver: zodResolver(editProductSchema),
     defaultValues: {
-      name: service?.name ?? '',
-      price: service?.price / 100 ?? 0,
+      name: product?.name ?? '',
+      price: product?.price / 100 ?? 0,
       updated_at: new Date(),
     },
   })
@@ -47,11 +43,9 @@ export function EditServiceDialog({
   const queryClient = useQueryClient()
 
   const { mutateAsync: updateService } = useMutation({
-    mutationFn: putUpdateService,
-    onSuccess(_, { id, name, price, updated_at: updatedAt }) {
-      const cached = queryClient.getQueryData<ServicePropsResponse[]>([
-        'services',
-      ])
+    mutationFn: putUpdateProduct,
+    onSuccess(_, { id, name, price, updatedAt }) {
+      const cached = queryClient.getQueryData<productProps[]>(['products'])
       if (cached) {
         const updatedData = cached.map((item) => {
           if (item.id === id) {
@@ -60,29 +54,27 @@ export function EditServiceDialog({
           return item
         })
 
-        queryClient.setQueryData(['services'], updatedData)
+        queryClient.setQueryData(['products'], updatedData)
       }
     },
   })
 
-  const { mutateAsync: deleteServiceFn } = useMutation({
-    mutationFn: deleteService,
+  const { mutateAsync: deleteProductFn } = useMutation({
+    mutationFn: deleteProduct,
     onSuccess(_, variables) {
-      const cached = queryClient.getQueryData<ServicePropsResponse[]>([
-        'services',
-      ])
+      const cached = queryClient.getQueryData<productProps[]>(['products'])
       if (cached) {
         queryClient.setQueryData(
-          ['services'],
-          cached.filter((service) => service.id !== variables),
+          ['products'],
+          cached.filter((product) => product.id !== variables),
         )
       }
     },
   })
 
-  async function handleOnSubmit(values: z.infer<typeof editServiceSchema>) {
+  async function handleOnSubmit(values: z.infer<typeof editProductSchema>) {
     const editedService = {
-      ...service,
+      ...product,
       name: values.name.toLowerCase(),
       price: values.price * 100,
       updated_at: values.updated_at,
@@ -98,7 +90,7 @@ export function EditServiceDialog({
 
   async function handleOnDelete() {
     try {
-      await deleteServiceFn(service.id)
+      await deleteProductFn(product.id)
       onOpenChange(!open)
       toast.success('Serviço excluído com sucesso.')
     } catch {
@@ -137,7 +129,11 @@ export function EditServiceDialog({
           </div>
 
           <DialogFooter className="gap-3">
-            <Button variant="ghost" type="button">
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={() => onOpenChange(!open)}
+            >
               Cancelar
             </Button>
             <Button

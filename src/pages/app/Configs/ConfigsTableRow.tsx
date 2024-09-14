@@ -3,32 +3,28 @@ import { ptBR } from 'date-fns/locale'
 import { SquarePen } from 'lucide-react'
 import { useState } from 'react'
 
-import { ServicePropsResponse } from '@/api/getServices'
+import { productProps } from '@/api/productRequests/product'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { EditServiceDialog } from './EditServiceDialog'
+import { EditProductDialog } from './EditProductDialog'
 
-interface ServiceProps {
-  service: ServicePropsResponse
-}
-
-export function ConfigsTableRow({ service }: ServiceProps) {
+export function ConfigsTableRow(product: productProps) {
   const [open, setOpen] = useState(false)
   return (
     <TableRow>
       <TableCell className="text-xs font-medium md:text-sm ">
-        {service.name}
+        {product.name}
       </TableCell>
       <TableCell className="text-xs font-medium text-muted-foreground md:text-sm">
-        {formatDistance(service.updated_at, new Date(), {
+        {formatDistance(product.updatedAt, new Date(), {
           locale: ptBR,
           addSuffix: true,
         })}
       </TableCell>
       <TableCell className="text-right text-xs font-medium md:text-sm">
-        {(service.price / 100).toLocaleString('pt-BR', {
+        {(product.price / 100).toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         })}
@@ -41,8 +37,8 @@ export function ConfigsTableRow({ service }: ServiceProps) {
             </Button>
           </DialogTrigger>
 
-          <EditServiceDialog
-            service={service}
+          <EditProductDialog
+            product={product}
             open={open}
             onOpenChange={setOpen}
           />

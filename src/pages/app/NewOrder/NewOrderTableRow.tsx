@@ -1,19 +1,15 @@
 import { X } from 'lucide-react'
 
+import { selectedProduct } from '@/api/productRequests/product'
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { NewItem } from './NewDelivery'
-
 interface RowProps {
-  selectedItem: NewItem
-  removeFunction: (selectedItem: NewItem) => void
+  selectedItem: selectedProduct
+  removeFunction: (selectedItem: selectedProduct) => void
 }
 
-export function NewDeliveryTableRow({
-  selectedItem,
-  removeFunction,
-}: RowProps) {
+export function NewOrderTableRow({ selectedItem, removeFunction }: RowProps) {
   return (
     <TableRow>
       <TableCell className="text-right">
@@ -26,22 +22,22 @@ export function NewDeliveryTableRow({
           <X className="h-5 w-5" color="#be123c" />
         </Button>
       </TableCell>
-      <TableCell>{selectedItem.service.name}</TableCell>
+      <TableCell>{selectedItem.product.name}</TableCell>
       <TableCell className="text-right">
-        {selectedItem.service.price.toLocaleString('pt-BR', {
+        {(selectedItem.product.price / 100).toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         })}
       </TableCell>
       <TableCell className="text-right">{selectedItem.amount}</TableCell>
       <TableCell className="text-right">
-        {(selectedItem.service.price * selectedItem.amount).toLocaleString(
-          'pt-BR',
-          {
-            style: 'currency',
-            currency: 'BRL',
-          },
-        )}
+        {(
+          (selectedItem.product.price / 100) *
+          selectedItem.amount
+        ).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })}
       </TableCell>
     </TableRow>
   )

@@ -1,8 +1,10 @@
 import { Bolt, HandCoins, Home, LogOut, Menu } from 'lucide-react'
 import { useState } from 'react'
 
-import logo from '../assets/logo.svg'
+import Icon from '@/assets/Icon'
+
 import { NavLink } from './Nav-Link'
+import { useTheme } from './theme/ThemeProvider'
 import { ThemeToggle } from './theme/ThemeToggle'
 import { Button } from './ui/button'
 import { Separator } from './ui/separator'
@@ -10,11 +12,12 @@ import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
 
 export function Header() {
   const [open, setOpen] = useState(false)
+  const { theme } = useTheme()
   return (
     <div>
       <div className="items-center justify-between border-b px-7 py-4 md:flex md:px-10">
         <div className="flex items-center gap-4">
-          <img src={logo} alt="" width={110} />
+          <Icon theme={theme} />
           <Separator orientation="vertical" className="h-6" />
           <ThemeToggle />
         </div>
@@ -36,7 +39,7 @@ export function Header() {
                 <Home className="h-4 w-4" />
                 Início
               </NavLink>
-              <NavLink to="/deliveries" onClick={() => setOpen(false)}>
+              <NavLink to="/orders" onClick={() => setOpen(false)}>
                 <LogOut className="h-4 w-4" />
                 Entregas
               </NavLink>
@@ -56,7 +59,7 @@ export function Header() {
             <Home className="h-4 w-4" />
             Início
           </NavLink>
-          <NavLink to="/deliveries">
+          <NavLink to="/orders">
             <LogOut className="h-4 w-4" />
             Entregas
           </NavLink>

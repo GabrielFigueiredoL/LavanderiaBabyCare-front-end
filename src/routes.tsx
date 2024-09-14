@@ -2,10 +2,10 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import { AppLayout } from './pages/_layouts/app'
 import { Configs } from './pages/app/Configs/Configs'
-import { Deliveries } from './pages/app/Deliveries/Deliveries'
 import { Finances } from './pages/app/Finances/Finances'
 import { Home } from './pages/app/Home/Home'
-import { NewDelivery } from './pages/app/NewDelivery/NewDelivery'
+import { NewOrder } from './pages/app/NewOrder/NewOrder'
+import { Orders } from './pages/app/Orders/Orders'
 import { PDFTemplate } from './pages/app/toPrint'
 import { SignIn } from './pages/auth/SignIn'
 
@@ -19,8 +19,8 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/Deliveries',
-        element: <Deliveries />,
+        path: '/orders',
+        element: <Orders />,
       },
       {
         path: '/finances',
@@ -32,7 +32,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/new',
-        element: <NewDelivery />,
+        element: <NewOrder />,
       },
     ],
   },

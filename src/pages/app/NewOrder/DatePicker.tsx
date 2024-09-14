@@ -2,6 +2,7 @@ import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -25,6 +26,16 @@ interface DateProps {
 
 export function DatePicker({ field, label }: DateProps) {
   const [open, setOpen] = useState(false)
+
+  function handleSelect(value: Date) {
+    if (value === undefined) {
+      toast.error('Um dia precisa ser selecionado')
+    } else {
+      field.onChange(value)
+      setOpen(!open)
+    }
+  }
+
   return (
     <FormItem className="flex flex-col">
       <FormLabel>{label}</FormLabel>
@@ -52,10 +63,7 @@ export function DatePicker({ field, label }: DateProps) {
             mode="single"
             locale={ptBR}
             selected={field.value}
-            onSelect={(value) => {
-              field.onChange(value)
-              setOpen(!open)
-            }}
+            onSelect={(value) => handleSelect(value!)}
             initialFocus
           />
         </PopoverContent>

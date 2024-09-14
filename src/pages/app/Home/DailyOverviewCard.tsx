@@ -1,5 +1,4 @@
-// interface Props { }
-
+import { districtAmountPerDay } from '@/api/orderRequests/getDistrictAmountPerDay'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -10,16 +9,19 @@ import {
 } from '@/components/ui/table'
 
 import { DailyOverviewTableRow } from './DailyOverviewTableRow'
+import { DailyOverviewTableRowSkeleton } from './DailyOverviewTableRowSkeleton'
 
 interface CardProps {
   isTitleWithdrawal?: boolean
-  data: {
-    name: string
-    amount: number
-  }[]
+  data: districtAmountPerDay[]
+  isLoading: boolean
 }
 
-export function DailyOverviewCard({ isTitleWithdrawal, data }: CardProps) {
+export function DailyOverviewCard({
+  isTitleWithdrawal,
+  data,
+  isLoading,
+}: CardProps) {
   return (
     <Card>
       <CardHeader>
@@ -33,15 +35,19 @@ export function DailyOverviewCard({ isTitleWithdrawal, data }: CardProps) {
               <TableHead className="w-10">Quantidade</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {data.map((item) => (
-              <DailyOverviewTableRow
-                key={item.name}
-                name={item.name}
-                amount={item.amount}
-              />
-            ))}
-          </TableBody>
+          {!isLoading ? (
+            <TableBody>
+              {data.map((item) => (
+                <DailyOverviewTableRow
+                  key={item.district}
+                  name={item.district}
+                  amount={item.amount}
+                />
+              ))}
+            </TableBody>
+          ) : (
+            <DailyOverviewTableRowSkeleton />
+          )}
         </Table>
       </CardContent>
     </Card>

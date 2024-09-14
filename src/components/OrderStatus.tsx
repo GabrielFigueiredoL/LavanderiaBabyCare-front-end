@@ -1,4 +1,4 @@
-type DeliveryStatus =
+export type OrderStatus =
   | 'toBeWithdrawn'
   | 'withdrawn'
   | 'processing'
@@ -7,11 +7,11 @@ type DeliveryStatus =
   | 'toBePaid'
   | 'paid'
 
-interface DeliveryStatusProps {
-  status: DeliveryStatus
+interface OrderStatusProps {
+  status: OrderStatus
 }
 
-const deliveryStatusMap: Record<DeliveryStatus, string> = {
+export const deliveryStatusMap: Record<OrderStatus, string> = {
   toBeWithdrawn: 'A retirar',
   withdrawn: 'Retirado',
   processing: 'Em limpeza',
@@ -21,7 +21,19 @@ const deliveryStatusMap: Record<DeliveryStatus, string> = {
   paid: 'Pago',
 }
 
-export function DeliveryStatus({ status }: DeliveryStatusProps) {
+const keys = Object.keys(deliveryStatusMap) as Array<string>
+
+export function getNextOrderStatus(statusId: number) {
+  const newStatusId = statusId + 1
+  const status = {
+    id: newStatusId,
+    name: keys[newStatusId] as OrderStatus,
+  }
+
+  return status
+}
+
+export function OrderStatus({ status }: OrderStatusProps) {
   return (
     <div className="flex items-center gap-2">
       {status === 'toBeWithdrawn' && (

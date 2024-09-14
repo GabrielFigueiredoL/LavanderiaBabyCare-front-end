@@ -1,9 +1,6 @@
-import {
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog'
+import { Button } from './ui/button'
+import { DialogDescription, DialogHeader, DialogTitle } from './ui/dialog'
+import { Skeleton } from './ui/skeleton'
 import {
   Table,
   TableBody,
@@ -12,52 +9,51 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from './ui/table'
 
-import { Button } from './ui/button'
-
-export function ServiceDetails() {
+export function OrderDetailsSkeleton() {
   return (
-    <DialogContent className="max-h-[90%] overflow-y-scroll">
+    <>
       <DialogHeader>
-        <DialogTitle>Pedido: 1827fy2827d6h</DialogTitle>
-        <DialogDescription>Detalhes do pedido</DialogDescription>
+        <DialogTitle className="flex gap-3">
+          Entrega: {<Skeleton className="h-5 w-7/12" />}
+        </DialogTitle>
+        <DialogDescription>Detalhes da entrega</DialogDescription>
       </DialogHeader>
 
       <div className="space-y-6">
-        <Table>
+        <Table className="text-xs md:text-sm">
           <TableBody>
             <TableRow>
               <TableCell className="text-muted-foreground">Status</TableCell>
               <TableCell className="flex justify-end">
-                <div className="flex items-center gap-2">
-                  <span className="h-2 w-2 rounded-full bg-slate-400" />
-                  <span className="font-medium text-muted-foreground">
-                    Pendente
-                  </span>
-                </div>
+                {<Skeleton className="h-5 w-28" />}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">Cliente</TableCell>
-              <TableCell className="flex justify-end">Gabriel</TableCell>
+              <TableCell className="flex justify-end">
+                {<Skeleton className="h-5 w-[200px]" />}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">Telefone</TableCell>
               <TableCell className="flex justify-end">
-                (61) 99999-9999
+                {<Skeleton className="h-5 w-[140px]" />}
               </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">Bairro</TableCell>
-              <TableCell className="flex justify-end">Sudoeste</TableCell>
+              <TableCell className="flex justify-end">
+                {<Skeleton className="h-5 w-32" />}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell className="text-muted-foreground">
                 Logradouro
               </TableCell>
               <TableCell className="flex justify-end">
-                SQSW 100 Bloco F
+                {<Skeleton className="h-5 w-40" />}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -65,13 +61,13 @@ export function ServiceDetails() {
                 Complemento
               </TableCell>
               <TableCell className="flex justify-end">
-                Apartamento 202
+                {<Skeleton className="h-5 w-[140px]" />}
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
 
-        <Table>
+        <Table className="text-xs md:text-sm">
           <TableHeader>
             <TableRow>
               <TableHead>Descrição</TableHead>
@@ -81,36 +77,44 @@ export function ServiceDetails() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell>Carrinho tradicional</TableCell>
-              <TableCell className="text-right">R$ 75,00</TableCell>
-              <TableCell className="text-right">2</TableCell>
-              <TableCell className="text-right">R$ 150,00</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Moisés</TableCell>
-              <TableCell className="text-right">R$ 60,00</TableCell>
-              <TableCell className="text-right">3</TableCell>
-              <TableCell className="text-right">R$ 180,00</TableCell>
-            </TableRow>
+            {Array.from({ length: 2 }).map((_, i) => {
+              return (
+                <TableRow key={i}>
+                  <TableCell>
+                    {<Skeleton className="h-5 w-[140px]" />}
+                  </TableCell>
+                  <TableCell>
+                    {<Skeleton className="ml-auto h-5 w-3" />}
+                  </TableCell>
+                  <TableCell>
+                    {<Skeleton className="ml-auto h-5 w-12" />}
+                  </TableCell>
+                  <TableCell>
+                    {<Skeleton className="ml-auto h-5 w-12" />}
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={3}>Valor total</TableCell>
-              <TableCell colSpan={3} className="text-right">
-                R$ 240,00
+              <TableCell colSpan={2}>Valor total</TableCell>
+              <TableCell colSpan={2}>
+                {<Skeleton className="ml-auto h-5 w-20" />}
               </TableCell>
             </TableRow>
           </TableFooter>
         </Table>
 
         <div className="flex justify-between">
-          <Button className="w-2/5" variant="destructive">
+          <Button className="w-2/5" variant="destructive" disabled>
             Excluir
           </Button>
-          <Button className="w-2/5">Orçamento</Button>
+          <Button className="w-2/5" disabled>
+            Orçamento
+          </Button>
         </div>
       </div>
-    </DialogContent>
+    </>
   )
 }

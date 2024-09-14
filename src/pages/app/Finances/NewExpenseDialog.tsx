@@ -4,11 +4,10 @@ import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
-import { getExpensesCategory } from '@/api/getExpensesCategory'
-import { postNewExpense } from '@/api/postNewExpense'
+import { getExpensesCategory } from '@/api/expenses/getExpensesCategory'
+import { postNewExpense } from '@/api/expenses/postNewExpense'
 import { InputField } from '@/components/InputField'
 import { Button } from '@/components/ui/button'
 import {
@@ -42,13 +41,11 @@ const newExpenseFormSchema = z.object({
   id: z.string(),
   description: z.string().min(1, 'Informe uma descrição'),
   created_at: z.date(),
-  category: z
-    .object({
-      id: z.string(),
-      name: z.string(),
-    })
-    .required(),
-  value: z.coerce.number().min(1, 'Informe um valor'),
+  category: z.object({
+    id: z.number(),
+    name: z.string(),
+  }),
+  price: z.coerce.number().min(1, 'Informe um valor'),
 })
 
 export function NewExpenseDialog() {
@@ -56,11 +53,14 @@ export function NewExpenseDialog() {
   const form = useForm<z.infer<typeof newExpenseFormSchema>>({
     resolver: zodResolver(newExpenseFormSchema),
     defaultValues: {
-      id: uuid(),
+      id: '',
       description: '',
       created_at: new Date(),
-      category: {},
-      value: 0,
+      category: {
+        id: 0,
+        name: '',
+      },
+      price: 0,
     },
   })
 
@@ -69,14 +69,14 @@ export function NewExpenseDialog() {
     queryFn: getExpensesCategory,
   })
 
-  const { mutateAsync: addNewExpense } = useMutation({
+  const { mutateAsync: addNewExpense, isPending } = useMutation({
     mutationFn: postNewExpense,
   })
 
   async function handleOnSubmit(values: z.infer<typeof newExpenseFormSchema>) {
     const newExpense = {
       ...values,
-      value: values.value * 100,
+      price: values.price * 100,
     }
     try {
       await addNewExpense(newExpense)
@@ -94,7 +94,6 @@ export function NewExpenseDialog() {
       </DialogHeader>
       <Form {...form}>
         <form
-          action=""
           onSubmit={form.handleSubmit(handleOnSubmit)}
           className="flex flex-col gap-3"
         >
@@ -123,8 +122,8 @@ export function NewExpenseDialog() {
                       >
                         {field.value.name
                           ? expensesCategory?.find(
-                              (expense) => expense.name === field.value.name,
-                            )?.name
+                            (expense) => expense.name === field.value.name,
+                          )?.name
                           : 'Selecione uma despesa...'}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                       </Button>
@@ -142,6 +141,7 @@ export function NewExpenseDialog() {
                             key={expense.id}
                             value={expense.name}
                             onSelect={() => {
+                              console.log(expense)
                               form.setValue('category', expense)
                               setOpen(false)
                             }}
@@ -167,13 +167,13 @@ export function NewExpenseDialog() {
 
           <FormField
             control={form.control}
-            name="value"
+            name="price"
             render={({ field }) => (
-              <InputField id="value" label="Valor" field={field} />
+              <InputField id="price" label="Valor" field={field} />
             )}
           />
           <DialogFooter>
-            <Button variant="accept" type="submit">
+            <Button variant="accept" type="submit" disabled={isPending}>
               Adicionar
             </Button>
           </DialogFooter>

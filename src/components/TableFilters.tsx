@@ -22,7 +22,7 @@ import {
 export function TableFilters() {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant="outline">
           <Filter />
           <span className="ml-2 hidden md:block">Filtros</span>

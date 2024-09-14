@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { z } from 'zod'
 
-import { getServices } from '@/api/getServices'
+import { getProducts } from '@/api/productRequests/getProducts'
+import { productProps } from '@/api/productRequests/product'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -20,29 +20,35 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-
-export const ServiceProps = z.object({
-  name: z.string(),
-  price: z.number(),
-})
-
-export type ServicePropsType = z.infer<typeof ServiceProps>
-
 interface SelectProps {
-  selectedService: ServicePropsType
-  setSelectedService: Dispatch<SetStateAction<ServicePropsType>>
+  selectedProduct: productProps
+  setSelectedProduct: Dispatch<SetStateAction<productProps>>
 }
 
-export function NewDeliveryCombobox({
-  selectedService,
-  setSelectedService,
+export function NewOrderCombobox({
+  selectedProduct,
+  setSelectedProduct,
 }: SelectProps) {
   const [open, setOpen] = useState(false)
 
-  const { data: services } = useQuery({
-    queryKey: ['services'],
-    queryFn: getServices,
+  const { data: products } = useQuery({
+    queryKey: ['products'],
+    queryFn: getProducts,
   })
+
+  function handleAddProduct(item: string) {
+    if (item === selectedProduct.name) {
+      setSelectedProduct({
+        id: '',
+        name: '',
+        price: 0,
+        updatedAt: new Date(0),
+      })
+    }
+    if (products) {
+      setSelectedProduct(products.find((product) => product.name === item)!)
+    }
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -53,8 +59,8 @@ export function NewDeliveryCombobox({
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {selectedService.name !== ''
-            ? services?.find((item) => item.name === selectedService.name)?.name
+          {selectedProduct.name !== ''
+            ? products?.find((item) => item.name === selectedProduct.name)?.name
             : 'Selecione um serviço...'}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -64,23 +70,19 @@ export function NewDeliveryCombobox({
           <CommandInput placeholder="Busque um serviço..." />
           <CommandEmpty>Não foi encontrado nenhum serviço.</CommandEmpty>
           <CommandGroup>
-            {services?.map((item) => (
+            {products?.map((item) => (
               <CommandItem
                 key={item.name}
                 value={item.name}
                 onSelect={(currentValue) => {
-                  setSelectedService(
-                    currentValue === selectedService.name
-                      ? { name: '', price: 0 }
-                      : { name: currentValue, price: item.price },
-                  )
+                  handleAddProduct(currentValue)
                   setOpen(false)
                 }}
               >
                 <Check
                   className={cn(
                     'mr-2 h-4 w-4',
-                    selectedService.name === item.name
+                    selectedProduct.name === item.name
                       ? 'opacity-100'
                       : 'opacity-0',
                   )}

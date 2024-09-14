@@ -1,6 +1,6 @@
 {
-  "deliveries": [],
-  "services": [
+  "orders": [],
+  "products": [
     {
       "id": "de8f0a73-85a7-5237-a279-fdd8a5412c25",
       "name": "berço portátil",

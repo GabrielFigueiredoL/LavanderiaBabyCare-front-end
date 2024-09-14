@@ -1,83 +1,361 @@
 {
-  "deliveries": [],
-  "services": [
+  "orders": [
     {
-      "id": "bfbd98f9-0fe1-55f9-833e-c94a8d942d57",
-      "name": "almofada de amamentação",
-      "price": 3000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "id": "2aa4b280-3e79-42b0-bca9-a6461be4d193",
+      "clientName": "Alan",
+      "clientPhone": "61999999993",
+      "pickupDate": "2024-01-09",
+      "deliveryDate": "2024-08-09",
+      "cep": "72240822",
+      "address": "QNP 9 Conjunto V",
+      "district": "Ceilândia Norte (Ceilândia)",
+      "number": "16",
+      "complement": "Casa",
+      "shipping": 2300,
+      "discount": 2000,
+      "selectedItems": [
+        {
+          "amount": 1,
+          "price": 7500,
+          "product": {
+            "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+            "name": "carrinho tradicional",
+            "price": 7500,
+            "updated_at": "2024-04-20T13:18:00.000+00:00"
+          },
+          "subTotal": 7500
+        }
+      ],
+      "status": {
+        "id": 1,
+        "name": "toBeWithdrawn"
+      },
+      "total": 7500
     },
     {
-      "id": "484eee47-dded-51de-a6ae-6ddeab902ebd",
-      "name": "bebê conforto",
-      "price": 6000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "id": "65e8030e-c6f3-461c-a221-cd4910e5301b",
+      "clientName": "Gilmar",
+      "clientPhone": "61999999993",
+      "pickupDate": "2024-01-08",
+      "deliveryDate": "2024-02-08",
+      "cep": "72240822",
+      "address": "QNP 9 Conjunto V",
+      "district": "Ceilândia Norte (Ceilândia)",
+      "number": "16",
+      "complement": "Casa",
+      "shipping": 2300,
+      "discount": 2000,
+      "selectedItems": [
+        {
+          "amount": 1,
+          "price": 7500,
+          "product": {
+            "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+            "name": "carrinho tradicional",
+            "price": 7500,
+            "updated_at": "2024-04-20T13:18:00.000+00:00"
+          },
+          "subTotal": 7500
+        }
+      ],
+      "status": {
+        "id": 1,
+        "name": "toBeWithdrawn"
+      },
+      "total": 7500
     },
+    {
+      "id": "79e7e5c0-3074-4000-a0cf-b2650bdedab0",
+      "clientName": "Gilmar",
+      "clientPhone": "61999999993",
+      "pickupDate": "2024-01-07",
+      "deliveryDate": "2024-02-07",
+      "cep": "72240822",
+      "address": "QNP 9 Conjunto V",
+      "district": "Ceilândia Norte (Ceilândia)",
+      "number": "16",
+      "complement": "Casa",
+      "shipping": 2300,
+      "discount": 2000,
+      "selectedItems": [
+        {
+          "amount": 1,
+          "price": 7500,
+          "product": {
+            "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+            "name": "carrinho tradicional",
+            "price": 7500,
+            "updated_at": "2024-04-20T13:18:00.000+00:00"
+          },
+          "subTotal": 7500
+        }
+      ],
+      "status": {
+        "id": 1,
+        "name": "toBeWithdrawn"
+      },
+      "total": 7500
+    },
+    {
+      "id": "7a859f4e-3072-4385-8be5-2f1f739bce42",
+      "clientName": "Roberta",
+      "clientPhone": "61999999993",
+      "pickupDate": "2024-09-08",
+      "deliveryDate": "2024-10-09",
+      "cep": "72240822",
+      "address": "QNP 9 Conjunto V",
+      "district": "Ceilândia Norte (Ceilândia)",
+      "number": "16",
+      "complement": "Casa",
+      "shipping": 2300,
+      "discount": 2000,
+      "selectedItems": [
+        {
+          "amount": 1,
+          "price": 7500,
+          "product": {
+            "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+            "name": "carrinho tradicional",
+            "price": 7500,
+            "updated_at": "2024-04-20T13:18:00.000+00:00"
+          },
+          "subTotal": 7500
+        }
+      ],
+      "status": {
+        "id": 1,
+        "name": "toBeWithdrawn"
+      },
+      "total": 7500
+    },
+    {
+      "id": "83ac95f6-2cba-4faf-8ac4-00d62b3d2674",
+      "clientName": "Roberta",
+      "clientPhone": "61999999993",
+      "pickupDate": "2024-02-08",
+      "deliveryDate": "2024-09-08",
+      "cep": "72240822",
+      "address": "QNP 9 Conjunto V",
+      "district": "Ceilândia Norte (Ceilândia)",
+      "number": "16",
+      "complement": "Casa",
+      "shipping": 2300,
+      "discount": 2000,
+      "selectedItems": [
+        {
+          "amount": 1,
+          "price": 7500,
+          "product": {
+            "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+            "name": "carrinho tradicional",
+            "price": 7500,
+            "updated_at": "2024-04-20T13:18:00.000+00:00"
+          },
+          "subTotal": 7500
+        }
+      ],
+      "status": {
+        "id": 1,
+        "name": "toBeWithdrawn"
+      },
+      "total": 7500
+    },
+    {
+      "id": "b1f3032c-ce8f-40aa-baa6-a4b50970120f",
+      "clientName": "Roberta",
+      "clientPhone": "61999999993",
+      "pickupDate": "2024-08-09",
+      "deliveryDate": "2024-10-09",
+      "cep": "72240822",
+      "address": "QNP 9 Conjunto V",
+      "district": "Ceilândia Norte (Ceilândia)",
+      "number": "16",
+      "complement": "Casa",
+      "shipping": 2300,
+      "discount": 2000,
+      "selectedItems": [
+        {
+          "amount": 1,
+          "price": 7500,
+          "product": {
+            "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+            "name": "carrinho tradicional",
+            "price": 7500,
+            "updated_at": "2024-04-20T13:18:00.000+00:00"
+          },
+          "subTotal": 7500
+        }
+      ],
+      "status": {
+        "id": 1,
+        "name": "toBeWithdrawn"
+      },
+      "total": 7500
+    },
+    {
+      "id": "b5c83f87-a5c8-436d-bcd7-691829a95a70",
+      "clientName": "Gilmar",
+      "clientPhone": "61999999993",
+      "pickupDate": "2024-01-09",
+      "deliveryDate": "2024-08-09",
+      "cep": "72240822",
+      "address": "QNP 9 Conjunto V",
+      "district": "Ceilândia Norte (Ceilândia)",
+      "number": "16",
+      "complement": "Casa",
+      "shipping": 2300,
+      "discount": 2000,
+      "selectedItems": [
+        {
+          "amount": 1,
+          "price": 7500,
+          "product": {
+            "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+            "name": "carrinho tradicional",
+            "price": 7500,
+            "updated_at": "2024-04-20T13:18:00.000+00:00"
+          },
+          "subTotal": 7500
+        }
+      ],
+      "status": {
+        "id": 1,
+        "name": "toBeWithdrawn"
+      },
+      "total": 7500
+    },
+    {
+      "id": "d2f1758e-0e11-4233-a978-bebadf33038f",
+      "clientName": "Gilmar",
+      "clientPhone": "61999999993",
+      "pickupDate": "2024-01-09",
+      "deliveryDate": "2024-02-09",
+      "cep": "72240822",
+      "address": "QNP 9 Conjunto V",
+      "district": "Ceilândia Norte (Ceilândia)",
+      "number": "16",
+      "complement": "Casa",
+      "shipping": 2300,
+      "discount": 2000,
+      "selectedItems": [
+        {
+          "amount": 1,
+          "price": 7500,
+          "product": {
+            "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
+            "name": "carrinho tradicional",
+            "price": 7500,
+            "updated_at": "2024-04-20T13:18:00.000+00:00"
+          },
+          "subTotal": 7500
+        }
+      ],
+      "status": {
+        "id": 1,
+        "name": "toBeWithdrawn"
+      },
+      "total": 7500
+    }
+  ],
+  "products": [
     {
       "id": "de8f0a73-85a7-5237-a279-fdd8a5412c25",
       "name": "berço portátil",
-      "price": 7000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "price": 10000,
+      "updatedAt": "2024-04-20T10:17:59.823Z",
+      "updated_at": "2024-09-09T19:46:04.551Z"
     },
     {
       "id": "08b4dc07-ea34-5590-8117-2df110e83968",
       "name": "cadeirinha de alimentação p",
       "price": 5000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
-    },
-    {
-      "id": "b8c04a0c-3983-5fd9-ba37-fbc8d6042ab3",
-      "name": "cadeirinha de alimentação g",
-      "price": 7000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
     },
     {
       "id": "5157f9b8-16af-5b5e-a051-7436d18e0659",
       "name": "cadeirinha de carro",
       "price": 7000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
     },
     {
       "id": "48131c05-0d29-5ee8-9156-854d7d86cace",
       "name": "cadeirinha de descanso",
       "price": 5000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
     },
     {
       "id": "b137239c-3601-5a93-bc46-1a0a0b6884d1",
       "name": "carrinho de gêmeo",
       "price": 12000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
     },
     {
       "id": "275cbfb4-a9b9-518b-930b-d62239571ec3",
       "name": "carrinho tradicional",
       "price": 7500,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
     },
     {
       "id": "4759cfa2-5387-55a3-93bd-7f4faca73101",
       "name": "moisés",
       "price": 6000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
     },
     {
       "id": "87acfffc-7974-513e-b6d6-6464ad6e762c",
       "name": "colchão de berço padrão",
       "price": 6000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
     },
     {
       "id": "a07f7219-4d3c-517a-b637-4bb66f70c92e",
       "name": "ninho",
       "price": 4000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
     },
     {
       "id": "c4e073e7-8edd-5e07-bf65-816f61b869c2",
       "name": "tapete de atividades",
       "price": 3000,
-      "updated_at": "2024-04-20T10:17:59.823Z"
+      "updatedAt": "2024-04-20T10:17:59.823Z"
+    }
+  ],
+  "expenses": [
+    {
+      "id": "ea2c50b5-bf6b-4e92-8de3-2faef205d1db",
+      "description": "Pneu furado",
+      "created_at": "2024-04-23T18:23:18.543Z",
+      "category": {
+        "id": 3,
+        "name": "manutenção do carro"
+      },
+      "value": 15000
+    }
+  ],
+  "expenses-category": [
+    {
+      "id": 0,
+      "name": "funcionários"
+    },
+    {
+      "id": 1,
+      "name": "gasolina"
+    },
+    {
+      "id": 2,
+      "name": "manutenção de equipamentos eletrônicos"
+    },
+    {
+      "id": 3,
+      "name": "manutenção do carro"
+    },
+    {
+      "id": 4,
+      "name": "manutenção do maquinário"
+    },
+    {
+      "id": 5,
+      "name": "materiais"
     }
   ]
 }

@@ -1,8 +1,9 @@
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
+import { useState } from 'react'
 
-import { getServices } from '@/api/getServices'
+import { getProducts } from '@/api/productRequests/getProducts'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -13,19 +14,20 @@ import {
 } from '@/components/ui/table'
 
 import { ConfigsTableRow } from './ConfigsTableRow'
-import { NewServiceDialog } from './NewServiceDialog'
+import { NewProductDialog } from './NewProductDialog'
 
 export function Configs() {
-  const { data: services } = useQuery({
-    queryKey: ['services'],
-    queryFn: getServices,
+  const [open, setOpen] = useState(false)
+  const { data: products } = useQuery({
+    queryKey: ['products'],
+    queryFn: getProducts,
   })
 
   return (
     <div>
       <div className="mb-4 flex justify-between">
         <h1 className=" text-3xl font-bold tracking-tight">Produtos</h1>
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className="md:hidden" />
@@ -33,7 +35,7 @@ export function Configs() {
             </Button>
           </DialogTrigger>
 
-          <NewServiceDialog />
+          <NewProductDialog open={open} setOpen={setOpen} />
         </Dialog>
       </div>
 
@@ -48,8 +50,8 @@ export function Configs() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {services?.map((service) => (
-              <ConfigsTableRow service={service} key={service.id} />
+            {products?.map((order) => (
+              <ConfigsTableRow key={order.id} {...order} />
             ))}
           </TableBody>
         </Table>

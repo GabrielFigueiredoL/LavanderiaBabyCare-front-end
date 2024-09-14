@@ -4,10 +4,11 @@ import { Plus, Search } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { v4 as uuid } from 'uuid'
 import { z } from 'zod'
 
-import { postNewDelivery } from '@/api/postNewDelivery'
+import { OrderDetailsProps } from '@/api/orderRequests/order'
+import { postNewOrder } from '@/api/orderRequests/postNewOrder'
+import { productProps, selectedProduct } from '@/api/productRequests/product'
 import { Button } from '@/components/ui/button'
 import { Form, FormField } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -25,68 +26,76 @@ import {
 import { InputField } from '../../../components/InputField'
 import { DatePicker } from './DatePicker'
 import { newDeliveryFormValidationSchema } from './FormSchema'
-import {
-  NewDeliveryCombobox,
-  ServiceProps,
-  ServicePropsType,
-} from './NewDeliveryCombobox'
-import { NewDeliveryTableRow } from './NewDeliveryTableRow'
+import { NewOrderCombobox } from './NewOrderCombobox'
+import { NewOrderTableRow } from './NewOrderTableRow'
 
-const NewItem = z.object({
-  service: ServiceProps,
-  amount: z.number(),
-})
-
-export type NewItem = z.infer<typeof NewItem>
-
-export function NewDelivery() {
-  const [selectedService, setSelectedService] = useState<ServicePropsType>({
-    name: '',
+export function NewOrder() {
+  const [selectedProduct, setSelectedProduct] = useState<productProps>({
+    id: '',
     price: 0,
+    name: '',
+    updatedAt: new Date(0),
   })
   const [amount, setAmount] = useState<number>(1)
-  const [selectedItems, setSelectedItems] = useState<NewItem[]>([])
+  const [selectedItems, setSelectedItems] = useState<selectedProduct[]>([])
 
   const form = useForm<z.infer<typeof newDeliveryFormValidationSchema>>({
     resolver: zodResolver(newDeliveryFormValidationSchema),
     defaultValues: {
-      name: '',
-      phone: '',
-      withdrawalDate: new Date(),
+      clientName: '',
+      clientPhone: '',
+      pickupDate: new Date(),
       deliveryDate: new Date(),
       cep: '',
-      adress: '',
+      address: '',
       district: '',
       number: '',
       complement: '',
-      freightage: 0,
+      shipping: 0,
       discount: 0,
-      id: uuid(),
+      id: '',
     },
   })
 
   const initialItemsPrice = 0
   const finalItemsPrice = selectedItems.reduce(
     (accumulator, currentItem) =>
-      accumulator + currentItem.service.price * currentItem.amount,
+      accumulator + (currentItem.product.price / 100) * currentItem.amount,
     initialItemsPrice,
   )
-  const freightage = Number(form.watch('freightage'))
+  const shipping = Number(form.watch('shipping'))
   const discount = Number(form.watch('discount'))
   const cep = form.watch('cep')
 
-  const { mutateAsync: addNewService } = useMutation({
-    mutationFn: postNewDelivery,
+  const { mutateAsync: addNewOrder } = useMutation({
+    mutationFn: postNewOrder,
   })
 
   async function HandleOnSubmit(
     values: z.infer<typeof newDeliveryFormValidationSchema>,
   ) {
-    try {
-      await addNewService({ ...values, status: 'toBeWithdrawn', selectedItems })
-      toast.success('Entrega adicionada com sucesso.')
-    } catch {
-      toast.error('Não foi possivel adicionar uma nova entrega.')
+    if (selectedItems.length < 1) {
+      toast.error('Selecione pelo menos 1 item')
+    } else {
+      try {
+        const newOrder: OrderDetailsProps = {
+          ...values,
+          status: {
+            id: 0,
+            name: 'toBeWithdrawn',
+          },
+          selectedItems,
+          shipping: values.shipping * 100,
+          discount: values.discount * 100,
+        }
+
+        await addNewOrder({ ...newOrder })
+        form.reset()
+        setSelectedItems([])
+        toast.success('Entrega adicionada com sucesso.')
+      } catch {
+        toast.error('Não foi possivel adicionar uma nova entrega.')
+      }
     }
   }
 
@@ -104,31 +113,37 @@ export function NewDelivery() {
       toast.error('Falha ao buscar cep, verifique o número e tente novamente')
     }
 
-    form.setValue('adress', cepData.logradouro)
+    form.setValue('address', cepData.logradouro)
     form.setValue('district', cepData.bairro)
   }
 
   function handleAddService() {
     const isAlreadySelected = selectedItems.find(
-      (item) => item.service === selectedService,
+      (item) => item.product === selectedProduct,
     )
 
-    const serviceIsValid = selectedService.name.length
+    const productIsValid = selectedProduct?.name.length
 
     if (isAlreadySelected) {
       toast.error('Item já adicionado')
-    } else if (!serviceIsValid) {
+    } else if (!productIsValid) {
       toast.error('É necessário escolher um item')
     } else {
       setSelectedItems((prevState) => [
         ...prevState,
-        { service: selectedService, amount },
+        {
+          product: selectedProduct,
+          amount,
+          price: selectedProduct.price,
+        },
       ])
     }
   }
 
-  function handleRemoveService(selectedItem: NewItem) {
-    const filteredList = selectedItems.filter((item) => item !== selectedItem)
+  function handleRemoveService(selectedItem: selectedProduct) {
+    const filteredList = selectedItems.filter(
+      (product) => product !== selectedItem,
+    )
     setSelectedItems(filteredList)
   }
 
@@ -144,23 +159,27 @@ export function NewDelivery() {
             <div className="flex flex-col gap-2">
               <FormField
                 control={form.control}
-                name="name"
+                name="clientName"
                 render={({ field }) => (
-                  <InputField id="name" label="Nome do cliente" field={field} />
+                  <InputField
+                    id="clientName"
+                    label="Nome do cliente"
+                    field={field}
+                  />
                 )}
               />
 
               <FormField
                 control={form.control}
-                name="phone"
+                name="clientPhone"
                 render={({ field }) => (
-                  <InputField id="phone" label="Telefone" field={field} />
+                  <InputField id="field" label="Telefone" field={field} />
                 )}
               />
 
               <FormField
                 control={form.control}
-                name="withdrawalDate"
+                name="pickupDate"
                 render={({ field }) => (
                   <DatePicker label="Data de retirada" field={field} />
                 )}
@@ -194,9 +213,9 @@ export function NewDelivery() {
 
               <FormField
                 control={form.control}
-                name="adress"
+                name="address"
                 render={({ field }) => (
-                  <InputField id="adress" label="Logradouro" field={field} />
+                  <InputField id="address" label="Logradouro" field={field} />
                 )}
               />
 
@@ -230,10 +249,10 @@ export function NewDelivery() {
 
               <FormField
                 control={form.control}
-                name="freightage"
+                name="shipping"
                 render={({ field }) => (
                   <InputField
-                    id="freightage"
+                    id="shipping"
                     label="Frete"
                     type="number"
                     field={field}
@@ -257,9 +276,9 @@ export function NewDelivery() {
               <div>
                 <Label>Selecione um serviço</Label>
                 <div className="flex gap-2">
-                  <NewDeliveryCombobox
-                    selectedService={selectedService}
-                    setSelectedService={setSelectedService}
+                  <NewOrderCombobox
+                    selectedProduct={selectedProduct}
+                    setSelectedProduct={setSelectedProduct}
                   />
                   <Input
                     type="number"
@@ -293,9 +312,9 @@ export function NewDelivery() {
                 </TableHeader>
                 <TableBody>
                   {selectedItems.map((item) => (
-                    <NewDeliveryTableRow
+                    <NewOrderTableRow
                       selectedItem={item}
-                      key={item.service.name}
+                      key={item.product.name}
                       removeFunction={handleRemoveService}
                     />
                   ))}
@@ -317,7 +336,7 @@ export function NewDelivery() {
                       Frete
                     </TableCell>
                     <TableCell className="text-right" colSpan={2}>
-                      {freightage.toLocaleString('pt-BR', {
+                      {shipping.toLocaleString('pt-BR', {
                         style: 'currency',
                         currency: 'BRL',
                       })}
@@ -340,7 +359,7 @@ export function NewDelivery() {
                       Total
                     </TableCell>
                     <TableCell className="text-right" colSpan={2}>
-                      {(finalItemsPrice + freightage - discount).toLocaleString(
+                      {(finalItemsPrice + shipping - discount).toLocaleString(
                         'pt-BR',
                         {
                           style: 'currency',
